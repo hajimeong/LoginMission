@@ -1,6 +1,9 @@
 package com.week10.mission.controller;
 
+import com.week10.mission.dto.LoginRequest;
+import com.week10.mission.dto.LoginResponse;
 import com.week10.mission.dto.SignupRequest;
+import com.week10.mission.jwt.JwtProvider;
 import com.week10.mission.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupRequest request) {
@@ -19,7 +23,7 @@ public class AuthController {
         return "회원가입 성공";
     }
 
-    @PostMapping("/login")
+    //@PostMapping("/login")
     public String login(){
         return "로그인 성공";
     }
@@ -32,6 +36,15 @@ public class AuthController {
     @GetMapping("/home")
     public String home(Authentication authentication) {
         return authentication.getName() + " 로그인 상태입니다.";
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        String token = userService.login(
+                request.getLoginId(),
+                request.getPassword()
+        );
+        return new LoginResponse(token);
     }
 }
 
