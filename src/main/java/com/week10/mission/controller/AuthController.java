@@ -19,6 +19,16 @@ public class AuthController {
         return "회원가입 성공";
     }
 
+    @PostMapping("/login")
+    public String login(){
+        return "로그인 성공";
+    }
+
+    @PostMapping("/logout")
+    public String logout(){
+        return "로그아웃 성공";
+    }
+
     @GetMapping("/home")
     public String home(Authentication authentication) {
         return authentication.getName() + " 로그인 상태입니다.";
